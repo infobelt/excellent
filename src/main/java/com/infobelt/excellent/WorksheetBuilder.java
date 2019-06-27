@@ -17,6 +17,7 @@ public class WorksheetBuilder {
     private boolean includeHeader = true;
     private int startRow = 0;
     private int startCell = 0;
+    private boolean showNullAsEmptyString = true;
 
     public WorksheetBuilder(WorkbookBuilder workbookBuilder) {
         this.workbookBuilder = workbookBuilder;
@@ -34,6 +35,11 @@ public class WorksheetBuilder {
 
     public WorksheetBuilder includeHeader(boolean includeHeader) {
         this.includeHeader = includeHeader;
+        return this;
+    }
+
+    public WorksheetBuilder showNullAsEmptyString(boolean showNullAsEmptyString) {
+        this.showNullAsEmptyString = showNullAsEmptyString;
         return this;
     }
 
@@ -96,7 +102,8 @@ public class WorksheetBuilder {
     }
 
     private void setCellValue(Cell cell, IColumnMetadata c, Object obj) {
-        cell.setCellValue(String.valueOf(c.getValue(obj)));
+        Object rawCellVal = c.getValue(obj);
+        cell.setCellValue(rawCellVal == null && this.showNullAsEmptyString ? "" : String.valueOf(rawCellVal));
     }
 
     private void writeHeader(Sheet sheet, CreationHelper createHelper, ColumnsMetadata columnsMetadata) {
