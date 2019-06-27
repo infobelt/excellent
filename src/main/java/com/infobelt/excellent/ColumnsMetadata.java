@@ -8,17 +8,16 @@ public class ColumnsMetadata {
 
     private final Collection objects;
 
-    private Map<String, ColumnMetadata> columns = new HashMap<>();
+    private Map<String, IColumnMetadata> columns = new HashMap<>();
 
     public ColumnsMetadata(Collection objects) {
         this.objects = objects;
     }
 
-    public void inspect(boolean firstRow) {
+    public void setColumns(boolean firstRow) {
         for (Object obj : objects) {
-
             for (Field field : obj.getClass().getDeclaredFields()) {
-                ColumnMetadata columnMetadata = new ColumnMetadata(obj, field);
+                FieldColumnMetadata columnMetadata = new FieldColumnMetadata(obj, field);
                 columns.put(columnMetadata.getName(), columnMetadata);
             }
 
@@ -27,9 +26,15 @@ public class ColumnsMetadata {
         }
     }
 
-    public List<ColumnMetadata> getColumns() {
+    public void setColumns(Collection<IColumnMetadata> columnDefs) {
+        for (IColumnMetadata colDef : columnDefs) {
+            columns.put(colDef.getName(), colDef);
+        }
+    }
+
+    public List<IColumnMetadata> getColumns() {
         return columns.values().stream()
-                .sorted(Comparator.comparing(ColumnMetadata::getOrder)).collect(Collectors.toList());
+                .sorted(Comparator.comparing(IColumnMetadata::getOrder)).collect(Collectors.toList());
     }
 
 }

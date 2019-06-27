@@ -2,7 +2,6 @@ package com.infobelt.excellent;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.WorkbookUtil;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -58,10 +57,20 @@ public class WorksheetBuilder {
     }
 
     void build(Workbook wb) {
+        ColumnsMetadata columnsMetadata = new ColumnsMetadata(objects);
+        columnsMetadata.setColumns(true);
+        writeWooksheet(wb, columnsMetadata);
+    }
+
+    void build(Workbook wb, Collection<IColumnMetadata> columnDefs) {
+        ColumnsMetadata columnsMetadata = new ColumnsMetadata(objects);
+        columnsMetadata.setColumns(columnDefs);
+        writeWooksheet(wb, columnsMetadata);
+    }
+
+    void writeWooksheet (Workbook wb, ColumnsMetadata columnsMetadata ) {
         Sheet sheet = wb.createSheet(WorkbookUtil.createSafeSheetName(title));
         CreationHelper createHelper = wb.getCreationHelper();
-        ColumnsMetadata columnsMetadata = new ColumnsMetadata(objects);
-        columnsMetadata.inspect(true);
 
         int currentRow = startRow;
         if (includeHeader) {
@@ -86,7 +95,7 @@ public class WorksheetBuilder {
         });
     }
 
-    private void setCellValue(Cell cell, ColumnMetadata c, Object obj) {
+    private void setCellValue(Cell cell, IColumnMetadata c, Object obj) {
         cell.setCellValue(String.valueOf(c.getValue(obj)));
     }
 

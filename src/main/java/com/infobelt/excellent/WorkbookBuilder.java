@@ -4,6 +4,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -24,4 +25,11 @@ public class WorkbookBuilder {
         sheets.forEach(s -> s.build(wb));
         return new WorkbookReference(wb);
     }
+
+    public WorkbookReference build(Collection<IColumnMetadata> columnDefs) {
+        Workbook wb = new XSSFWorkbook();
+        sheets.forEach(s -> s.build(wb, columnDefs));
+        return new WorkbookReference(wb);
+    }
+
 }

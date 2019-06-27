@@ -5,22 +5,22 @@ import lombok.Data;
 import java.util.HashMap;
 
 @Data
-public class GenericColumnMetadata implements IColumnMetadata{
+public class BasicColumnMetadata implements IColumnMetadata{
 
     private String name;
     private String header;
     private int order;
     private boolean ignored = false;
 
-    public GenericColumnMetadata(){};
+    public BasicColumnMetadata(){};
 
-    public GenericColumnMetadata(String name, String header, int order) {
+    public BasicColumnMetadata(String name, String header, int order) {
         this.name = name;
         this.header = header;
         this.order = order;
     }
 
-    public GenericColumnMetadata(String name, String header, int order, boolean ignored) {
+    public BasicColumnMetadata(String name, String header, int order, boolean ignored) {
         this.name = name;
         this.header = header;
         this.order = order;

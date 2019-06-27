@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class BasicTest {
+public class FieldTest {
 
     @Data
     @AllArgsConstructor
@@ -29,8 +29,7 @@ public class BasicTest {
     public void people() throws IOException {
         List<Person> people = Arrays.asList(new Person("Philip", 45, "blhablah"), new Person("Bob", 32, "blahla"));
         WorkbookReference workbook = new WorkbookBuilder().sheet().title("People").from(people).endSheet().build();
-        workbook.toFile("/tmp/test.xlsx");
+        workbook.toFile("/tmp/field-column-wb-test.xlsx");
 
     }
-
 }
