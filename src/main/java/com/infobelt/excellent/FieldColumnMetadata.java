@@ -5,6 +5,7 @@ import lombok.Data;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 
 @Data
 public class ColumnMetadata {
@@ -37,9 +38,18 @@ public class ColumnMetadata {
             this.ignored = true;
     }
 
+    public ColumnMetadata(String name, String header, int order, boolean ignored) {
+        this.field = null;
+        this.name = name;
+        this.header = header;
+        this.order = order;
+        this.ignored = ignored;
+    }
+
+
     public Object getValue(Object obj) {
         try {
-            return PropertyUtils.getProperty(obj, field.getName());
+            return field != null ? PropertyUtils.getProperty(obj, field.getName()) : ((HashMap) obj).get(getName());
         } catch (Exception e) {
             throw new RuntimeException("Unable to get field " + field.getName() + " on " + obj, e);
         }

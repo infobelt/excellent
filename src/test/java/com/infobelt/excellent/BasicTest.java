@@ -1,35 +1,36 @@
 package com.infobelt.excellent;
 
-import com.infobelt.excellent.annotations.ExcelColumn;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-public class BasicTest {
-
-    @Data
-    @AllArgsConstructor
-    public static class Person {
-
-        @ExcelColumn(header="Person Name")
-        private String name;
-
-        @ExcelColumn(header="Person Age")
-        private int age;
-
-        @ExcelColumn(ignore=true)
-        private String password;
-    }
+public class GenericTest {
 
     @Test
-    public void people() throws IOException {
-        List<Person> people = Arrays.asList(new Person("Philip", 45, "blhablah"), new Person("Bob", 32, "blahla"));
-        WorkbookReference workbook = new WorkbookBuilder().sheet().title("People").from(people).endSheet().build();
-        workbook.toFile("/tmp/test.xlsx");
+    public void genericProducts() throws IOException {
+
+        List<IColumnMetadata> columnDefs = new ArrayList<>();
+        columnDefs.add(new GenericColumnMetadata("productId", "Product ID", 1));
+        columnDefs.add(new GenericColumnMetadata("productName", "Product Name", 2));
+        columnDefs.add(new GenericColumnMetadata("productDesc", "Product Description", 3));
+
+        List rows = new ArrayList<Map<String, Object> >();
+
+        for(int i = 0; i < 3; i++){
+            Map<String, Object> values = new HashMap<>();
+            values.put("productId", i);
+            values.put("productName", "Product Name " + i);
+            values.put("productDesc", "Description for product " + i);
+            rows.add(values);
+        }
+
+        WorkbookBuilder wbBuilder = new WorkbookBuilder().sheet().title("Products").from(rows).endSheet();
+
+        WorkbookReference workbook = wbBuilder.build(columnDefs);
+        workbook.toFile("/tmp/generic-wb-test.xlsx");
 
     }
 
