@@ -103,7 +103,15 @@ public class WorksheetBuilder {
 
     private void setCellValue(Cell cell, IColumnMetadata c, Object obj) {
         Object rawCellVal = c.getValue(obj);
-        cell.setCellValue(rawCellVal == null && this.showNullAsEmptyString ? "" : String.valueOf(rawCellVal));
+        rawCellVal = rawCellVal.toString().replaceAll("\\s{2,}", " ").trim();
+        if ((rawCellVal.toString() != null || !rawCellVal.toString().equalsIgnoreCase(""))) {
+            if (rawCellVal.toString().length() > 32767) {
+                cell.setCellValue(rawCellVal == null && this.showNullAsEmptyString ? "" : rawCellVal.toString().substring(0, 32763) + "...");
+            }
+        }
+        else {
+            cell.setCellValue(rawCellVal == null && this.showNullAsEmptyString ? "" : String.valueOf(rawCellVal));
+        }
     }
 
     private void writeHeader(Sheet sheet, CreationHelper createHelper, ColumnsMetadata columnsMetadata) {
