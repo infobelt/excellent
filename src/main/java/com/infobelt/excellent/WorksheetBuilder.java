@@ -108,10 +108,11 @@ public class WorksheetBuilder {
             if (rawCellVal.toString().length() > 32767) {
                 cell.setCellValue(rawCellVal == null && this.showNullAsEmptyString ? "" : rawCellVal.toString().substring(0, 32763) + "...");
             }
+            else {
+                cell.setCellValue(rawCellVal == null && this.showNullAsEmptyString ? "" : String.valueOf(rawCellVal));
+            }
         }
-        else {
-            cell.setCellValue(rawCellVal == null && this.showNullAsEmptyString ? "" : String.valueOf(rawCellVal));
-        }
+
     }
 
     private void writeHeader(Sheet sheet, CreationHelper createHelper, ColumnsMetadata columnsMetadata) {
