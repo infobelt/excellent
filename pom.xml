@@ -6,7 +6,7 @@
 
     <groupId>com.infobelt</groupId>
     <artifactId>excellent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.7</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
