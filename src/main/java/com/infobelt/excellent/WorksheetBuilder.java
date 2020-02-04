@@ -2,6 +2,9 @@ package com.infobelt.excellent;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.WorkbookUtil;
+
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -103,13 +106,20 @@ public class WorksheetBuilder {
 
     private void setCellValue(Cell cell, IColumnMetadata c, Object obj) {
         Object rawCellVal = c.getValue(obj);
+        String columnType = ((FieldColumnMetadata) c).getField().getType().getSimpleName();
         if (rawCellVal != null && !String.valueOf(rawCellVal).equals("")) {
             rawCellVal = rawCellVal.toString().replaceAll("\\s{2,}", " ").trim();
             if (rawCellVal.toString().length() > 32767) {
                 cell.setCellValue(rawCellVal.toString().substring(0, 32763) + "...");
             }
             else {
-                cell.setCellValue(String.valueOf(rawCellVal));
+                if (columnType.equals("ZonedDateTime")) {
+                    ZonedDateTime parsedVal;
+                    parsedVal = ZonedDateTime.parse(String.valueOf(rawCellVal));
+                    cell.setCellValue(parsedVal.format(DateTimeFormatter.ofPattern("MM/dd/YYYY, HH:mm:ss")));
+                } else {
+                    cell.setCellValue(String.valueOf(rawCellVal));
+                }
             }
         } else {
             cell.setCellValue("");
