@@ -106,7 +106,10 @@ public class WorksheetBuilder {
 
     private void setCellValue(Cell cell, IColumnMetadata c, Object obj) {
         Object rawCellVal = c.getValue(obj);
-        String columnType = ((FieldColumnMetadata) c).getField().getType().getSimpleName();
+        String columnType = "";
+        if (c instanceof FieldColumnMetadata) {
+            columnType = ((FieldColumnMetadata) c).getField().getType().getSimpleName();
+        }
         if (rawCellVal != null && !String.valueOf(rawCellVal).equals("")) {
             rawCellVal = rawCellVal.toString().replaceAll("\\s{2,}", " ").trim();
             if (rawCellVal.toString().length() > 32767) {
