@@ -112,6 +112,7 @@ public class WorksheetBuilder {
         }
         if (rawCellVal != null && !String.valueOf(rawCellVal).equals("")) {
             rawCellVal = rawCellVal.toString().replaceAll("\\s{2,}", " ").trim();
+            rawCellVal = rawCellVal.toString().replaceAll("&ensp;", " ");
             if (rawCellVal.toString().length() > 32767) {
                 cell.setCellValue(rawCellVal.toString().substring(0, 32763) + "...");
             }
